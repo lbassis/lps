@@ -81,3 +81,19 @@ df %>% summarize(TOTAL_AUTO = sum(AUTO),
 The table was transposed to become easier to read its results. As we can see, the majority of accidents is caused by autos (which probably means cars, but I can't be sure), followed by motos (bikes). This result suggests that the worst drivers we have around here are the "common people". It's also interesting to note that ONIBUS_URB (urban buses) are the most involved in accidents, so it could be safer going from another city to Porto Alegre (via ONIBUS_INT - intermunicipal buses [and I'm just guessing actually]) than traveling inside the city, unless you take a LOTACAO (I don't know if there is an english name for this kind of bus).
 
 PS: It would be better if the frame was ordered by the amount of accidents, but everytime I tried arranging it, the row descriptions were gone so I just left it as it is.
+
+# 3. What types of accidents are more common?
+
+```{r}
+df %>% group_by(TIPO_ACID) %>% summarize(Amount = n()) %>% arrange(desc(Amount))
+
+```
+
+The most common is by far ABALROAMENTO, which, according to Google, is "a violent shock of one thing against another". This description turns difficult to analyze this data, cause I fail to see a difference in comparison to "CHOQUE" (shock).
+
+```{r}
+df %>% group_by(TIPO_ACID) %>% summarize(Deaths = sum(MORTES),
+                                          Hurtings = sum(FERIDOS)) %>% arrange(desc(Deaths, Hurtings))
+```
+
+Checking for the amount of hurt/dead people involved in those accidents, we see that, although CHOQUE and ABALROAMENTO seems very similar, the former tends to kill people while the latter tends to only hurt them. So, maybe CHOQUE stands for more violent incidents (like two cars colliding) and ABALROAMENTO for any other type of collision.
