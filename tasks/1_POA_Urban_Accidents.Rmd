@@ -74,7 +74,7 @@ df %>% summarize(TOTAL_AUTO = sum(AUTO),
                TOTAL_MOTO = sum(MOTO),
                TOTAL_CARROCA = sum(CARROCA),
                TOTAL_BICICLETA = sum(BICICLETA),
-               TOTAL_OUTRO = sum(OUTRO)) %>% t() %>% as.data.frame %>% rename(Amount = V1) # %>% arrange(desc(Amount))
+               TOTAL_OUTRO = sum(OUTRO)) %>% t() %>% as.data.frame %>% rename(AMOUNT = V1) # %>% arrange(desc(Amount))
 
 ```
 
@@ -85,15 +85,15 @@ PS: It would be better if the frame was ordered by the amount of accidents, but 
 # 3. What types of accidents are more common?
 
 ```{r}
-df %>% group_by(TIPO_ACID) %>% summarize(Amount = n()) %>% arrange(desc(Amount))
+df %>% group_by(TIPO_ACID) %>% summarize(AMOUNT = n()) %>% arrange(desc(AMOUNT))
 
 ```
 
 The most common is by far ABALROAMENTO, which, according to Google, is "a violent shock of one thing against another". This description turns difficult to analyze this data, cause I fail to see a difference in comparison to "CHOQUE" (shock).
 
 ```{r}
-df %>% group_by(TIPO_ACID) %>% summarize(Deaths = sum(MORTES),
-                                          Hurtings = sum(FERIDOS)) %>% arrange(desc(Deaths, Hurtings))
+df %>% group_by(TIPO_ACID) %>% summarize(DEATHS = sum(MORTES),
+                                          HURTINGS = sum(FERIDOS)) %>% arrange(desc(DEATHS, HURTINGS))
 ```
 
 Checking for the amount of hurt/dead people involved in those accidents, we see that, although CHOQUE and ABALROAMENTO seems very similar, the former tends to kill people while the latter tends to only hurt them. So, maybe CHOQUE stands for more violent incidents (like two cars colliding) and ABALROAMENTO for any other type of collision.
@@ -101,13 +101,13 @@ Checking for the amount of hurt/dead people involved in those accidents, we see 
 # 4. Is the number of deaths increasing or decreasing?
 
 ```{r}
-df %>% group_by(MES) %>% summarize(Mortes = sum(MORTES)) %>% plot(type = "l")
+df %>% group_by(MES) %>% summarize(DEATHS = sum(MORTES)) %>% plot(type = "l")
 ```
 
-In the graph above, we can see that the most life-threatening months are July and December. This might be because of the holydays, when a lot of people travel and possibly expose themselves to this kind of danger.
+In the graph above, we can see that the most life-threatening months are July and December. This might be because of the holidays, when a lot of people travel and possibly expose themselves to this kind of danger.
 
 ```{r}
-df %>% group_by(MES) %>% summarize(Mortes = sum(MORTE_POST)) %>% plot(type = "l")
+df %>% group_by(MES) %>% summarize(DEATHS = sum(MORTE_POST)) %>% plot(type = "l")
 ```
 
 Checking for posthumous death, the graph isn't that different, except that it now has a lot of incidents on October also.
@@ -115,7 +115,7 @@ Checking for posthumous death, the graph isn't that different, except that it no
 # 5. Is there a street of the city with more accidents than others?
 
 ```{r}
-df %>% group_by(LOG1) %>% summarize(Accidents = n()) %>% arrange(desc(Accidents))
+df %>% group_by(LOG1) %>% summarize(ACCIDENTS = n()) %>% arrange(desc(ACCIDENTS))
 ```
 
 The majority of accidents happens in avenues, which is completely expected, since they are the most frequented streets.
@@ -126,8 +126,18 @@ df %>% filter(LOG1 == "AV IPIRANGA") %>% group_by(NOITE_DIA) %>% summarize(n())
 
 Checking AV IPIRANGA, the most dangerous avenue (and part of the way to Campus do Vale to many people), we see that the accidents tend to happen during the day (when we are going to the campus!), so it's not a night-time problem or something like that.
 
+# 6. Do holidays impact in the number of accidents?
 
+Well, we actually already saw in #4 that the majority of deaths occurs on July and December, months of holidays in Brazil.
 
+```{r}
+df %>% group_by(MES) %>% summarize(HURTINGS = sum(FERIDOS)) %>% plot(type = "l")
+```
 
+Verifying the amount of hurt people, we see that the peak isn't the holidays months anymore, but May and September. I can't find a proper possible explanation for this.
 
+```{r}
+df %>% group_by(MES) %>% summarize(ACCIDENTS = n()) %>% plot(type = "l")
+```
 
+And finally, ploting the accidents themselves, we see that, in general, May and August are the most terrible months.
