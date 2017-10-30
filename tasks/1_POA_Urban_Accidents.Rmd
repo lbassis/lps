@@ -36,9 +36,28 @@ Supposing you have the URL for the CSV file, you can read the data using the cod
 
 ```{r}
 library(readr)
-URL <- "http://www.opendatapoa.com.br/storage/f/2013-11-06T17%3A26%3A29.293Z/acidentes-2000.csv"
-df <- read_delim(URL, delim=";")
+#URL <- "http://www.opendatapoa.com.br/storage/f/2013-11-06T16%3A52%3A35.356Z/acidentes-2009.csv"
+#URL <- "http://www.opendatapoa.com.br/storage/f/2013-11-06T16%3A38%3A56.849Z/acidentes-2007.csv"
+
+#df <- read_delim(URL, delim=";")
+df <- read_delim("acidentes-2007.csv", delim=";")
 df
 ```
+# 1 - What is the time of the day with most accidents?
 
+```{r}
+library(magrittr);
+library(dplyr);
+
+df %>% group_by (NOITE_DIA) %>% summarize(TOTAL = n());
+```
+
+The amount of accidents during the day is over twice the nightly amount, which is kind of unexpected. Although there tend to be more cars in the streets during the day, at night it's probably easier for one to become distracted/sleepy/drunk driving.
+
+
+```{r}
+df %>% group_by(TIPO_ACID, NOITE_DIA) %>% summarize(TOTAL = n())
+```
+
+Checking the amount of accidents of each kind we see that the only one that happens more at night than during the day is CAPOTAGEM (overturning), which doesn't necessarily mean anything but could suggest that it's easier to flip your car at night.
 
