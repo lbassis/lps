@@ -97,3 +97,19 @@ df %>% group_by(TIPO_ACID) %>% summarize(Deaths = sum(MORTES),
 ```
 
 Checking for the amount of hurt/dead people involved in those accidents, we see that, although CHOQUE and ABALROAMENTO seems very similar, the former tends to kill people while the latter tends to only hurt them. So, maybe CHOQUE stands for more violent incidents (like two cars colliding) and ABALROAMENTO for any other type of collision.
+
+# 4. Is the number of deaths increasing or decreasing?
+
+```{r}
+df %>% group_by(MES) %>% summarize(Mortes = sum(MORTES)) %>% plot(type = "l")
+```
+
+In the graph above, we can see that the most life-threatening months are July and December. This might be because of the holydays, when a lot of people travel and possibly expose themselves to this kind of danger.
+
+```{r}
+df %>% group_by(MES) %>% summarize(Mortes = sum(MORTE_POST)) %>% plot(type = "l")
+```
+
+Checking for posthumous death, the graph isn't that different, except that it now has a lot of incidents on October also.
+
+
