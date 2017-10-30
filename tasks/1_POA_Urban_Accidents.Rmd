@@ -112,4 +112,22 @@ df %>% group_by(MES) %>% summarize(Mortes = sum(MORTE_POST)) %>% plot(type = "l"
 
 Checking for posthumous death, the graph isn't that different, except that it now has a lot of incidents on October also.
 
+# 5. Is there a street of the city with more accidents than others?
+
+```{r}
+df %>% group_by(LOG1) %>% summarize(Accidents = n()) %>% arrange(desc(Accidents))
+```
+
+The majority of accidents happens in avenues, which is completely expected, since they are the most frequented streets.
+
+```{r}
+df %>% filter(LOG1 == "AV IPIRANGA") %>% group_by(NOITE_DIA) %>% summarize(n())
+```
+
+Checking AV IPIRANGA, the most dangerous avenue (and part of the way to Campus do Vale to many people), we see that the accidents tend to happen during the day (when we are going to the campus!), so it's not a night-time problem or something like that.
+
+
+
+
+
 
