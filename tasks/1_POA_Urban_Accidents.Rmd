@@ -61,3 +61,23 @@ df %>% group_by(TIPO_ACID, NOITE_DIA) %>% summarize(TOTAL = n())
 
 Checking the amount of accidents of each kind we see that the only one that happens more at night than during the day is CAPOTAGEM (overturning), which doesn't necessarily mean anything but could suggest that it's easier to flip your car at night.
 
+# 2 - How many vehicles are involved in the accidents?
+
+```{r}
+
+df %>% summarize(TOTAL_AUTO = sum(AUTO),
+               TOTAL_TAXI = sum(TAXI),
+               TOTAL_LOTACAO = sum(LOTACAO),
+               TOTAL_ONIBUS_URB = sum(ONIBUS_URB),
+               TOTAL_ONIBUS_INT = sum(ONIBUS_INT),
+               TOTAL_CAMINHAO = sum(CAMINHAO),
+               TOTAL_MOTO = sum(MOTO),
+               TOTAL_CARROCA = sum(CARROCA),
+               TOTAL_BICICLETA = sum(BICICLETA),
+               TOTAL_OUTRO = sum(OUTRO)) %>% t() %>% as.data.frame %>% rename(Amount = V1) # %>% arrange(desc(Amount))
+
+```
+
+The table was transposed to become easier to read its results. As we can see, the majority of accidents is caused by autos (which probably means cars, but I can't be sure), followed by motos (bikes). This result suggests that the worst drivers we have around here are the "common people". It's also interesting to note that ONIBUS_URB (urban buses) are the most involved in accidents, so it could be safer going from another city to Porto Alegre (via ONIBUS_INT - intermunicipal buses [and I'm just guessing actually]) than traveling inside the city, unless you take a LOTACAO (I don't know if there is an english name for this kind of bus).
+
+PS: It would be better if the frame was ordered by the amount of accidents, but everytime I tried arranging it, the row descriptions were gone so I just left it as it is.
